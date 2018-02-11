@@ -16,6 +16,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        window = UIWindow(frame: UIScreen.main.bounds)
+        let firstScreen = UIViewController()
+        let firstScreenNav = UINavigationController(rootViewController: firstScreen)
+        firstScreenNav.view.backgroundColor = #colorLiteral(red: 0.3098039329, green: 0.01568627544, blue: 0.1294117719, alpha: 1)
+        let secondScreen = UIViewController()
+        let secondScreenNav = UINavigationController(rootViewController: secondScreen)
+        secondScreenNav.view.backgroundColor = #colorLiteral(red: 0.1294117719, green: 0.2156862766, blue: 0.06666667014, alpha: 1)
+        let tabController = UITabBarController()
+        tabController.viewControllers = [firstScreenNav, secondScreenNav]
+        window?.rootViewController = tabController
+        window?.makeKeyAndVisible()
         return true
     }
 
