@@ -12,6 +12,7 @@
 		37B345602030F84E0096206E /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37B3455F2030F84E0096206E /* SecondViewController.swift */; };
 		37B345652030F84E0096206E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 37B345642030F84E0096206E /* Assets.xcassets */; };
 		37B345702030FDA90096206E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 37B3456F2030FDA90096206E /* LaunchScreen.storyboard */; };
+		37B345722030FEE20096206E /* CurrentLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37B345712030FEE20096206E /* CurrentLocationViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		37B345642030F84E0096206E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		37B345692030F84E0096206E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		37B3456F2030FDA90096206E /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		37B345712030FEE20096206E /* CurrentLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentLocationViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +62,7 @@
 				37B3455F2030F84E0096206E /* SecondViewController.swift */,
 				37B345642030F84E0096206E /* Assets.xcassets */,
 				37B345692030F84E0096206E /* Info.plist */,
+				37B345712030FEE20096206E /* CurrentLocationViewController.swift */,
 			);
 			path = MyLocations;
 			sourceTree = "<group>";
@@ -136,6 +139,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				37B345602030F84E0096206E /* SecondViewController.swift in Sources */,
+				37B345722030FEE20096206E /* CurrentLocationViewController.swift in Sources */,
 				37B3455C2030F84E0096206E /* AppDelegate.swift in Sources */,
 				37B3455E2030F84E0096206E /* FirstViewController.swift in Sources */,
 			);
