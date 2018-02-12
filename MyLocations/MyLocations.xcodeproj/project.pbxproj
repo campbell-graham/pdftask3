@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		37B3455C2030F84E0096206E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37B3455B2030F84E0096206E /* AppDelegate.swift */; };
-		37B3455E2030F84E0096206E /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37B3455D2030F84E0096206E /* FirstViewController.swift */; };
 		37B345602030F84E0096206E /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37B3455F2030F84E0096206E /* SecondViewController.swift */; };
 		37B345652030F84E0096206E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 37B345642030F84E0096206E /* Assets.xcassets */; };
 		37B345702030FDA90096206E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 37B3456F2030FDA90096206E /* LaunchScreen.storyboard */; };
@@ -18,7 +17,6 @@
 /* Begin PBXFileReference section */
 		37B345582030F84E0096206E /* MyLocations.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyLocations.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		37B3455B2030F84E0096206E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		37B3455D2030F84E0096206E /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
 		37B3455F2030F84E0096206E /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
 		37B345642030F84E0096206E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		37B345692030F84E0096206E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -58,7 +56,6 @@
 			children = (
 				37B3456F2030FDA90096206E /* LaunchScreen.storyboard */,
 				37B3455B2030F84E0096206E /* AppDelegate.swift */,
-				37B3455D2030F84E0096206E /* FirstViewController.swift */,
 				37B3455F2030F84E0096206E /* SecondViewController.swift */,
 				37B345642030F84E0096206E /* Assets.xcassets */,
 				37B345692030F84E0096206E /* Info.plist */,
@@ -141,7 +138,6 @@
 				37B345602030F84E0096206E /* SecondViewController.swift in Sources */,
 				37B345722030FEE20096206E /* CurrentLocationViewController.swift in Sources */,
 				37B3455C2030F84E0096206E /* AppDelegate.swift in Sources */,
-				37B3455E2030F84E0096206E /* FirstViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
