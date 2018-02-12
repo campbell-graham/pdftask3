@@ -57,6 +57,7 @@ class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate
         
         //button event handling
         getButton.addTarget(self, action: #selector(getLocation), for: .touchUpInside)
+        tagButton.addTarget(self, action: #selector(openDetailController), for: .touchUpInside)
         
         //add to view
         view.addSubview(messageLabel)
@@ -336,6 +337,10 @@ class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate
         }
         
         return line1 + "\n" + line2
+    }
+    
+    @objc func openDetailController() {
+        navigationController?.pushViewController(LocationDetailsViewController(), animated: true)
     }
     
 

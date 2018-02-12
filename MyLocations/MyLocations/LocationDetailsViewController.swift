@@ -44,6 +44,51 @@ class LocationDetailsViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 3
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        switch section {
+        case 0:
+            return 2
+        case 1:
+            return 1
+        case 2:
+            return 4
+        default:
+            return 0
+        }
+    }
+    
+    //eliminates the deadspace above the first section that is unwanted
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return section == 0 ? 0 : 44
+    }
+    
+    //need this in order for heightForheaderInSection to trigger
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        return nil
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        var cell = tableView.dequeueReusableCell(withIdentifier: "cell")
+        //generate the cell if one has not been made previously 
+        if cell == nil {
+            cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
+        }
+        cell?.textLabel?.text = "[\(indexPath.section),\(indexPath.row)]"
+        return cell!
+    }
+    
+    @objc func done() {
+        navigationController?.popViewController(animated: true)
+    }
+    
+    @objc func cancel() {
+        navigationController?.popViewController(animated: true)
+    }
+    
 
     /*
     // MARK: - Navigation
