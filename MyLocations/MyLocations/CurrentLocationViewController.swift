@@ -109,7 +109,6 @@ class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate
         latitudeValueLabel.textAlignment = .right
         longitudeValueLabel.textAlignment = .right
         tagButton.setTitle("Tag Current Location", for: .normal)
-        getButton.setTitle("Get My Location", for: .normal)
         
         //default text for labels that do not change
         latitudeTextLabel.text = "Latitude:"
@@ -137,7 +136,13 @@ class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate
             return
         }
         
-        startLocationManager()
+        if updatingLocation {
+            stopLocationManager()
+        } else {
+            location = nil
+            lastLocationError = nil
+            startLocationManager()
+        }
         updateLables()
     }
     
@@ -228,8 +233,19 @@ class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate
             longitudeValueLabel.text = ""
             addressLabel.text = ""
             tagButton.isHidden = true
+    
         }
         
+         configureGetButton()
+        
+    }
+    
+    func configureGetButton() {
+        if updatingLocation {
+            getButton.setTitle("Stop", for: .normal)
+        } else {
+            getButton.setTitle("Get My Location", for: .normal)
+        }
     }
     
 
