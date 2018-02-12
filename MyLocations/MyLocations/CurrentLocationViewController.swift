@@ -19,7 +19,7 @@ class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate
     var tagButton: UIButton
     var getButton: UIButton
     let locationManager = CLLocationManager()
-    
+    var location: CLLocation!
 
     init() {
         //object initialisation
@@ -29,7 +29,6 @@ class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate
         addressLabel = UILabel()
         tagButton = UIButton(type: .system)
         getButton = UIButton(type: .system)
-        
         super.init(nibName: nil, bundle: nil)
         
     }
@@ -93,12 +92,9 @@ class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate
         
         //text and other visual tweaks
         messageLabel.textAlignment = .center
-        messageLabel.text = "[user location here]"
-        latitudeLabel.text = "Lattitude: [Latitude goes here]"
-        longitudeLabel.text = "Longitude: [Longitude goes here]"
-        addressLabel.text = "Address goes here"
         tagButton.setTitle("Tag Current Location", for: .normal)
         getButton.setTitle("Get My Location", for: .normal)
+        updateLables()
     }
 
     override func didReceiveMemoryWarning() {
@@ -129,8 +125,10 @@ class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        let newLocation = locations.last
+        let newLocation = locations.last!
         print("Did update to location : \(newLocation)")
+        location = newLocation
+        updateLables()
     }
     
     func showLocationServicesDeniedAlert() {
@@ -138,6 +136,22 @@ class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate
         let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
         alert.addAction(okAction)
         present(alert, animated: true, completion: nil)
+    }
+    
+    func updateLables() {
+        if let location = location {
+            latitudeLabel.text = "\(location.coordinate.latitude)"
+            longitudeLabel.text = "\(location.coordinate.longitude)"
+            tagButton.isHidden = false
+            messageLabel.text = ""
+        } else {
+            messageLabel.text = "Tab 'Get My Location' to start"
+            latitudeLabel.text = ""
+            longitudeLabel.text = ""
+            addressLabel.text = ""
+            tagButton.isHidden = true
+        }
+        
     }
     
 
