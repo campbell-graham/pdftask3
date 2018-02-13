@@ -80,10 +80,6 @@ class LocationDetailsViewController: UITableViewController, CategoryPickerTableV
         return indexPath.section == 0 && indexPath.row == 0 ? 100 : 50
     }
     
-    override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-        return indexPath.section == 2 ? nil : indexPath
-    }
-    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
     
@@ -96,7 +92,7 @@ class LocationDetailsViewController: UITableViewController, CategoryPickerTableV
     
     //eliminates the deadspace above the first section that is unwanted
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return section == 0 ? 0 : 44
+        return section == 0 ? 0 : 28
     }
     
     //need this in order for heightForheaderInSection to trigger
@@ -132,6 +128,7 @@ class LocationDetailsViewController: UITableViewController, CategoryPickerTableV
             cell.textLabel?.text = "Add Photo"
             cell.accessoryType = .disclosureIndicator
         } else if location.section == 2 {
+            cell.selectionStyle = .none
             switch location.row {
             case 0:
                 cell.textLabel?.text = "Latitude"
