@@ -84,6 +84,12 @@ class LocationDetailsViewController: UITableViewController {
         return indexPath.section == 2 ? nil : indexPath
     }
     
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.section == 1 {
+            navigationController?.pushViewController(CategoryPickerTableViewController(), animated: true)
+        }
+    }
+    
     //eliminates the deadspace above the first section that is unwanted
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return section == 0 ? 0 : 44
