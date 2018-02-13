@@ -106,14 +106,17 @@ class LocationDetailsViewController: UITableViewController, CategoryPickerTableV
         }
     }
     
-    //eliminates the deadspace above the first section that is unwanted
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return section == 0 ? 0 : 28
-    }
-    
-    //need this in order for heightForheaderInSection to trigger
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        return nil
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        switch section {
+        case 0:
+            return "Description"
+        case 1:
+            return "Image"
+        case 2:
+            return "Details"
+        default:
+            return ""
+        }
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
