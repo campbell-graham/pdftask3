@@ -172,7 +172,12 @@ class LocationDetailsViewController: UITableViewController, CategoryPickerTableV
     }
     
     @objc func done() {
-        dismiss(animated: true, completion: nil)
+        let hudView = HudView.hud(inView: navigationController!.view, animated: true)
+        hudView.text = "Tagged"
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
+            self.cancel()
+        }
+        
     }
     
     @objc func cancel() {

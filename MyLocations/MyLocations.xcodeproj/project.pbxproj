@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3748D3A82032A1AB00E429AB /* HudView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3748D3A72032A1AB00E429AB /* HudView.swift */; };
 		37A65A3A20324F3100BC9479 /* LocationDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A65A3920324F3100BC9479 /* LocationDetailsViewController.swift */; };
 		37A65A3C203272BD00BC9479 /* TextFieldTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A65A3B203272BD00BC9479 /* TextFieldTableViewCell.swift */; };
 		37A65A3E203282E900BC9479 /* CategoryPickerTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A65A3D203282E900BC9479 /* CategoryPickerTableViewController.swift */; };
@@ -17,6 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3748D3A72032A1AB00E429AB /* HudView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HudView.swift; sourceTree = "<group>"; };
 		37A65A3920324F3100BC9479 /* LocationDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDetailsViewController.swift; sourceTree = "<group>"; };
 		37A65A3B203272BD00BC9479 /* TextFieldTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldTableViewCell.swift; sourceTree = "<group>"; };
 		37A65A3D203282E900BC9479 /* CategoryPickerTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryPickerTableViewController.swift; sourceTree = "<group>"; };
@@ -66,6 +68,7 @@
 				37A65A3920324F3100BC9479 /* LocationDetailsViewController.swift */,
 				37A65A3B203272BD00BC9479 /* TextFieldTableViewCell.swift */,
 				37A65A3D203282E900BC9479 /* CategoryPickerTableViewController.swift */,
+				3748D3A72032A1AB00E429AB /* HudView.swift */,
 			);
 			path = MyLocations;
 			sourceTree = "<group>";
@@ -143,6 +146,7 @@
 			files = (
 				37A65A3A20324F3100BC9479 /* LocationDetailsViewController.swift in Sources */,
 				37B345722030FEE20096206E /* CurrentLocationViewController.swift in Sources */,
+				3748D3A82032A1AB00E429AB /* HudView.swift in Sources */,
 				37B3455C2030F84E0096206E /* AppDelegate.swift in Sources */,
 				37A65A3E203282E900BC9479 /* CategoryPickerTableViewController.swift in Sources */,
 				37A65A3C203272BD00BC9479 /* TextFieldTableViewCell.swift in Sources */,
