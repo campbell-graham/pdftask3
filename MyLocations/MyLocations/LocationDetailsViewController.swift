@@ -16,7 +16,8 @@ class LocationDetailsViewController: UITableViewController {
     var longitudeLabel: UILabel
     var addressLabel: UILabel
     var dateLabel: UILabel
-    
+    var doneButton: UIBarButtonItem!
+    var cancelButton: UIBarButtonItem!
     
     init() {
         desciptionTextView = UITextView()
@@ -35,7 +36,12 @@ class LocationDetailsViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        title = "Tag Location"
+        navigationItem.largeTitleDisplayMode = .never
+        doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done))
+        cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancel))
+        navigationItem.rightBarButtonItem = doneButton
+        navigationItem.leftBarButtonItem = cancelButton
         // Do any additional setup after loading the view.
     }
 
@@ -61,6 +67,14 @@ class LocationDetailsViewController: UITableViewController {
         }
     }
     
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return indexPath.section == 0 && indexPath.row == 0 ? 100 : 50
+    }
+    
+    override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        return indexPath.section == 2 ? nil : indexPath
+    }
+    
     //eliminates the deadspace above the first section that is unwanted
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return section == 0 ? 0 : 44
@@ -75,18 +89,57 @@ class LocationDetailsViewController: UITableViewController {
         var cell = tableView.dequeueReusableCell(withIdentifier: "cell")
         //generate the cell if one has not been made previously 
         if cell == nil {
-            cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
+            cell = UITableViewCell(style: .value1, reuseIdentifier: "cell")
         }
-        cell?.textLabel?.text = "[\(indexPath.section),\(indexPath.row)]"
+        configureCell(for: cell!, at: indexPath)
         return cell!
     }
     
+    func configureCell(for cell: UITableViewCell, at location: IndexPath) {
+        if location.section == 0 {
+            switch location.row {
+            case 0:
+                cell.textLabel?.text = "[text will go here]"
+            case 1:
+                cell.textLabel?.text = "Category"
+                cell.detailTextLabel?.text = "No Category"
+                cell.accessoryType = .disclosureIndicator
+            default:
+                print("Error: Cell location is invalid")
+            }
+        } else if location.section == 1 {
+            cell.textLabel?.text = "Add Photo"
+            cell.accessoryType = .disclosureIndicator
+        } else if location.section == 2 {
+            switch location.row {
+            case 0:
+                cell.textLabel?.text = "Latitude"
+                cell.detailTextLabel?.text = "[some value]"
+            case 1:
+                cell.textLabel?.text = "Longitude"
+                cell.detailTextLabel?.text = "[some value]"
+            case 2:
+                cell.textLabel?.text = "Address"
+                cell.detailTextLabel?.text = "[some value]"
+            case 3:
+                cell.textLabel?.text = "Date"
+                cell.detailTextLabel?.text = "[some value]"
+            default:
+                cell.textLabel?.text = ""
+            }
+        } else {
+            print("Error: Cell location is invalid")
+        }
+        
+        
+    }
+    
     @objc func done() {
-        navigationController?.popViewController(animated: true)
+        dismiss(animated: true, completion: nil)
     }
     
     @objc func cancel() {
-        navigationController?.popViewController(animated: true)
+        dismiss(animated: true, completion: nil)
     }
     
 

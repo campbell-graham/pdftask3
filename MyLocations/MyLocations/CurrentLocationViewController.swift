@@ -340,7 +340,7 @@ class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate
     }
     
     @objc func openDetailController() {
-        navigationController?.pushViewController(LocationDetailsViewController(), animated: true)
+        present(UINavigationController(rootViewController: LocationDetailsViewController()), animated: true, completion: nil)
     }
     
 
