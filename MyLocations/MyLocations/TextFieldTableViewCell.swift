@@ -16,6 +16,8 @@ class TextFieldTableViewCell: UITableViewCell {
         textField = UITextField()
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
+        textField.placeholder = "Enter a description..."
+        
         addSubview(textField)
         
         textField.translatesAutoresizingMaskIntoConstraints = false

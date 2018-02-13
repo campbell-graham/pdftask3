@@ -9,7 +9,7 @@
 import UIKit
 import CoreLocation
 
-class LocationDetailsViewController: UITableViewController {
+class LocationDetailsViewController: UITableViewController, CategoryPickerTableViewControllerDelegate {
     
     var desciptionTextView: UITextView
     var categoryLabel: UILabel
@@ -85,8 +85,10 @@ class LocationDetailsViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.section == 1 {
-            navigationController?.pushViewController(CategoryPickerTableViewController(), animated: true)
+        if indexPath.section == 0 && indexPath.row == 1 {
+            let destination = CategoryPickerTableViewController()
+            destination.delegate = self
+            navigationController?.pushViewController(destination, animated: true)
         }
     }
     
@@ -117,8 +119,6 @@ class LocationDetailsViewController: UITableViewController {
     func configureCell(for cell: UITableViewCell, at location: IndexPath) {
         if location.section == 0 {
             switch location.row {
-            case 0:
-                cell.textLabel?.text = "[text will go here]"
             case 1:
                 cell.textLabel?.text = "Category"
                 cell.detailTextLabel?.text = "No Category"
@@ -160,6 +160,11 @@ class LocationDetailsViewController: UITableViewController {
     @objc func cancel() {
         dismiss(animated: true, completion: nil)
     }
+    
+    func categoryPickerTableViewController(_ class: CategoryPickerTableViewController, didSelectCategory category: String) {
+        tableView.cellForRow(at: IndexPath(item: 1, section: 0))?.detailTextLabel?.text = category
+    }
+    
     
 
     /*

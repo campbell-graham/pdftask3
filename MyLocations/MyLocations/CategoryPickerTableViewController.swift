@@ -10,6 +10,7 @@ import UIKit
 
 class CategoryPickerTableViewController: UITableViewController {
     
+    var delegate: CategoryPickerTableViewControllerDelegate?
     var selectedCategoryName = ""
     
     let categories = [
@@ -38,6 +39,7 @@ class CategoryPickerTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.tableFooterView = UIView()
     }
 
     override func didReceiveMemoryWarning() {
@@ -57,5 +59,11 @@ class CategoryPickerTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print(categories[indexPath.row])
+        navigationController?.popViewController(animated: true)
+        delegate?.categoryPickerTableViewController(self, didSelectCategory: categories[indexPath.row])
     }
+}
+
+protocol CategoryPickerTableViewControllerDelegate: class {
+    func categoryPickerTableViewController(_ class: CategoryPickerTableViewController, didSelectCategory category: String)
 }
