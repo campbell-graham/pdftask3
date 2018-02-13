@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 class LocationDetailsViewController: UITableViewController {
     
@@ -18,8 +19,15 @@ class LocationDetailsViewController: UITableViewController {
     var dateLabel: UILabel
     var doneButton: UIBarButtonItem!
     var cancelButton: UIBarButtonItem!
+    var location: CLLocation
+    var address: String
+    let formatter = DateFormatter()
     
-    init() {
+    init(location: CLLocation, address: String) {
+        
+        self.location = location
+        self.address = address
+        formatter.dateFormat = "dd-MM-yyyy hh:mm a"
         desciptionTextView = UITextView()
         categoryLabel = UILabel()
         latitudeLabel = UILabel()
@@ -37,6 +45,7 @@ class LocationDetailsViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Tag Location"
+        tableView.register(TextFieldTableViewCell.self, forCellReuseIdentifier: "textFieldCell")
         navigationItem.largeTitleDisplayMode = .never
         doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done))
         cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancel))
@@ -86,6 +95,10 @@ class LocationDetailsViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.section == 0 && indexPath.row == 0 {
+            return tableView.dequeueReusableCell(withIdentifier: "textFieldCell", for: indexPath) as! TextFieldTableViewCell
+        }
+        
         var cell = tableView.dequeueReusableCell(withIdentifier: "cell")
         //generate the cell if one has not been made previously 
         if cell == nil {
@@ -114,16 +127,16 @@ class LocationDetailsViewController: UITableViewController {
             switch location.row {
             case 0:
                 cell.textLabel?.text = "Latitude"
-                cell.detailTextLabel?.text = "[some value]"
+                cell.detailTextLabel?.text = String(format: "%.8f", self.location.coordinate.latitude)
             case 1:
                 cell.textLabel?.text = "Longitude"
-                cell.detailTextLabel?.text = "[some value]"
+                cell.detailTextLabel?.text = String(format: "%.8f", self.location.coordinate.longitude)
             case 2:
                 cell.textLabel?.text = "Address"
-                cell.detailTextLabel?.text = "[some value]"
+                cell.detailTextLabel?.text = address
             case 3:
                 cell.textLabel?.text = "Date"
-                cell.detailTextLabel?.text = "[some value]"
+                cell.detailTextLabel?.text = formatter.string(from: Date())
             default:
                 cell.textLabel?.text = ""
             }
