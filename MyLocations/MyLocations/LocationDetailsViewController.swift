@@ -51,7 +51,23 @@ class LocationDetailsViewController: UITableViewController, CategoryPickerTableV
         cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancel))
         navigationItem.rightBarButtonItem = doneButton
         navigationItem.leftBarButtonItem = cancelButton
+        
+        let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
+        gestureRecognizer.cancelsTouchesInView = false
+        tableView.addGestureRecognizer(gestureRecognizer)
         // Do any additional setup after loading the view.
+    }
+    
+    @objc func hideKeyboard(_ gestureRecognizer: UIGestureRecognizer) {
+        let point = gestureRecognizer.location(in: tableView)
+        let indexPath = tableView.indexPathForRow(at: point)
+        
+        if indexPath != nil && indexPath!.section == 0 && indexPath!.row == 0 {
+            return
+        }
+        
+        (tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as! TextFieldTableViewCell).textField.resignFirstResponder()
+    
     }
 
     override func didReceiveMemoryWarning() {
