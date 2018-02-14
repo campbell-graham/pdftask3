@@ -20,17 +20,21 @@ class HudView: UIView {
     }
     
     override func draw(_ rect: CGRect) {
-        let boxWidth: CGFloat = 96
-        let boxHeight: CGFloat = 96
+        let boxWidth: CGFloat = 128
+        let boxHeight: CGFloat = 128
         let boxRect = CGRect(x: round((bounds.size.width - boxWidth) / 2), y: round((bounds.size.height - boxHeight) / 2), width: boxWidth, height: boxHeight)
         let roundedRect = UIBezierPath(roundedRect: boxRect, cornerRadius: 10)
         UIColor(white: 0.3, alpha: 0.8).setFill()
         roundedRect.fill()
         
-        if let image = UIImage(named: "like") {
-            let imagePoint = CGPoint(x: center.x - round(image.size.width / 2), y: center.y - round(image.size.height / 2) - boxHeight / 8)
-            image.draw(at: imagePoint)
-        }
+        let image = #imageLiteral(resourceName: "like").withRenderingMode(.alwaysTemplate)
+        let imagePoint = CGPoint(x: center.x - round(image.size.width / 2), y: center.y - round(image.size.height / 2) - boxHeight / 8)
+        let imageView = UIImageView(frame: CGRect(x: imagePoint.x, y: imagePoint.y, width: image.size.width, height: image.size.height))
+        imageView.image = image
+        imageView.tintColor = UIColor.white
+        addSubview(imageView)
+        
+        
         
         let attribs = [
             NSAttributedStringKey.font: UIFont.systemFont(ofSize: 16),
