@@ -166,7 +166,7 @@ class LocationDetailsViewController: UITableViewController, CategoryPickerTableV
                 cell.detailTextLabel?.text = locationToEdit != nil ? String(format: "%.8f", (locationToEdit?.longitude)!) : String(format: "%.8f", (self.location?.coordinate.longitude)!)
             case 2:
                 cell.textLabel?.text = "Address"
-                cell.detailTextLabel?.text = locationToEdit != nil ? locationToEdit?.address : "No Address"
+                cell.detailTextLabel?.text = locationToEdit != nil ? locationToEdit?.address : address
             case 3:
                 cell.textLabel?.text = "Date"
                 cell.detailTextLabel?.text = locationToEdit != nil ? formatter.string(from: (locationToEdit?.date)!) : formatter.string(from: date)
