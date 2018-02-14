@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import CoreLocation
 
 class LocationsViewController: UITableViewController {
     
@@ -64,7 +65,8 @@ class LocationsViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, editActionsForRowAt: IndexPath) -> [UITableViewRowAction]? {
         let more = UITableViewRowAction(style: .normal, title: "Edit") { action, index in
-            print("edit button tapped")
+            let destination = LocationDetailsViewController(locationToEdit: self.locations[editActionsForRowAt.row])
+            self.present(UINavigationController(rootViewController: destination), animated: true, completion: nil)
         }
         more.backgroundColor = .lightGray
     

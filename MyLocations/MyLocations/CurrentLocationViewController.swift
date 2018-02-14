@@ -344,7 +344,7 @@ class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate
     }
     
     @objc func openDetailController() {
-        let destination = LocationDetailsViewController(location: location, address: addressLabel.text!, placemark: placemark, locationToEdit: nil)
+        let destination = LocationDetailsViewController(location: location, address: addressLabel.text!, placemark: placemark)
         destination.managedObjectContext = self.managedObjectContext
         present(UINavigationController(rootViewController: destination), animated: true, completion: nil)
     }

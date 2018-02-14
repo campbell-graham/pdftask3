@@ -14,8 +14,8 @@ class LocationDetailsViewController: UITableViewController, CategoryPickerTableV
     
     var doneButton: UIBarButtonItem!
     var cancelButton: UIBarButtonItem!
-    var location: CLLocation
-    var address: String
+    var location: CLLocation?
+    var address: String?
     var date = Date()
     let formatter = DateFormatter()
     var managedObjectContext: NSManagedObjectContext!
@@ -23,13 +23,19 @@ class LocationDetailsViewController: UITableViewController, CategoryPickerTableV
     var categoryName: String?
     var locationToEdit: Location?
     
-    init(location: CLLocation, address: String, placemark: CLPlacemark?, locationToEdit: Location?) {
+    init(location: CLLocation, address: String, placemark: CLPlacemark?) {
         
         self.location = location
         self.address = address
         self.placemark = placemark
         formatter.dateFormat = "dd-MM-yyyy hh:mm a"
 
+        super.init(style: .grouped)
+    }
+    
+    init(locationToEdit: Location?) {
+        self.locationToEdit = locationToEdit
+        formatter.dateFormat = "dd-MM-yyyy hh:mm a"
         super.init(style: .grouped)
     }
     
@@ -122,7 +128,9 @@ class LocationDetailsViewController: UITableViewController, CategoryPickerTableV
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 && indexPath.row == 0 {
-            return tableView.dequeueReusableCell(withIdentifier: "textFieldCell", for: indexPath) as! TextFieldTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "textFieldCell", for: indexPath) as! TextFieldTableViewCell
+            cell.textField.text = locationToEdit != nil ? locationToEdit?.locationDescription : ""
+            return cell
         }
         
         var cell = tableView.dequeueReusableCell(withIdentifier: "cell")
@@ -139,7 +147,7 @@ class LocationDetailsViewController: UITableViewController, CategoryPickerTableV
             switch location.row {
             case 1:
                 cell.textLabel?.text = "Category"
-                cell.detailTextLabel?.text = locationToEdit != nil ? locationToEdit?.locationDescription : "No Description"
+                cell.detailTextLabel?.text = locationToEdit != nil ? locationToEdit?.category : "No Category"
                 cell.accessoryType = .disclosureIndicator
             default:
                 print("Error: Cell location is invalid")
@@ -152,10 +160,10 @@ class LocationDetailsViewController: UITableViewController, CategoryPickerTableV
             switch location.row {
             case 0:
                 cell.textLabel?.text = "Latitude"
-                cell.detailTextLabel?.text = locationToEdit != nil ? String(format: "%.8f", (locationToEdit?.latitude)!) : String(format: "%.8f", self.location.coordinate.latitude)
+                cell.detailTextLabel?.text = locationToEdit != nil ? String(format: "%.8f", (locationToEdit?.latitude)!) : String(format: "%.8f", (self.location?.coordinate.latitude)!)
             case 1:
                 cell.textLabel?.text = "Longitude"
-                cell.detailTextLabel?.text = locationToEdit != nil ? String(format: "%.8f", (locationToEdit?.longitude)!) : String(format: "%.8f", self.location.coordinate.longitude)
+                cell.detailTextLabel?.text = locationToEdit != nil ? String(format: "%.8f", (locationToEdit?.longitude)!) : String(format: "%.8f", (self.location?.coordinate.longitude)!)
             case 2:
                 cell.textLabel?.text = "Address"
                 cell.detailTextLabel?.text = locationToEdit != nil ? locationToEdit?.address : "No Address"
@@ -179,9 +187,9 @@ class LocationDetailsViewController: UITableViewController, CategoryPickerTableV
         let locationToAdd = Location(context: managedObjectContext)
         locationToAdd.locationDescription = (tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as! TextFieldTableViewCell).textField.text!
         locationToAdd.category = (tableView.cellForRow(at: IndexPath(item: 1, section: 0))?.detailTextLabel?.text)!
-        locationToAdd.latitude = location.coordinate.latitude
-        locationToAdd.address = address
-        locationToAdd.longitude = location.coordinate.longitude
+        locationToAdd.latitude = (location?.coordinate.latitude)!
+        locationToAdd.address = address!
+        locationToAdd.longitude = (location?.coordinate.longitude)!
         locationToAdd.date = date
         
         if let placemark = placemark {
