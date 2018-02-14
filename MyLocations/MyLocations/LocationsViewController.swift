@@ -61,5 +61,24 @@ class LocationsViewController: UITableViewController {
         cell?.detailTextLabel?.text = location.address
         return cell!
     }
+    
+    override func tableView(_ tableView: UITableView, editActionsForRowAt: IndexPath) -> [UITableViewRowAction]? {
+        let more = UITableViewRowAction(style: .normal, title: "Edit") { action, index in
+            print("edit button tapped")
+        }
+        more.backgroundColor = .lightGray
+    
+        
+        let share = UITableViewRowAction(style: .normal, title: "Delete") { action, index in
+            print("delete button tapped")
+        }
+        share.backgroundColor = .red
+        
+        return [share, more]
+    }
+    
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
 
 }
