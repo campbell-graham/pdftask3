@@ -7,8 +7,12 @@
 //
 
 import UIKit
+import CoreData
 
 class LocationsViewController: UITableViewController {
+    
+    var locations = [Location]()
+    var managedObjectContect: NSManagedObjectContext!
     
     init() {
         super.init(style: .plain)
@@ -23,6 +27,18 @@ class LocationsViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.tableFooterView = UIView()
+        
+        let fetchRequest = NSFetchRequest<Location>()
+        let entity = Location.entity()
+        fetchRequest.entity = entity
+        let sortDescriptor = NSSortDescriptor(key: "date", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        
+        do {
+            locations = try managedObjectContect.fetch(fetchRequest)
+        } catch {
+            fatalCoreDataError(error)
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -32,7 +48,7 @@ class LocationsViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return locations.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -40,8 +56,21 @@ class LocationsViewController: UITableViewController {
         if cell == nil {
             cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
         }
-        cell?.textLabel?.text = "Location Description"
-        cell?.detailTextLabel?.text = "Location Address"
+        let location = locations[indexPath.row]
+        cell?.textLabel?.text = location.locationDescription
+        if let placemark = location.placemark {
+            var text = ""
+            if let s = placemark.subThoroughfare {
+                text += s + " " }
+            if let s = placemark.thoroughfare {
+                text += s + ", "
+            }
+            if let s = placemark.locality {
+                text += s }
+            cell?.detailTextLabel?.text = text
+        } else {
+            cell?.detailTextLabel?.text = ""
+        }
         return cell!
     }
 
