@@ -26,7 +26,7 @@ class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate
     var updatingLocation = false
     var lastLocationError: Error?
     let geoCoder = CLGeocoder()
-    var placemark: CLPlacemark!
+    var placemark: CLPlacemark?
     var performingReverseGeocoding = false
     var lastGeocodingError: Error?
     var timer: Timer?
@@ -40,9 +40,13 @@ class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate
         latitudeTextLabel = UILabel()
         longitudeTextLabel = UILabel()
         addressLabel = UILabel()
+        addressLabel.text = ""
         tagButton = UIButton(type: .system)
         getButton = UIButton(type: .system)
         super.init(nibName: nil, bundle: nil)
+        tabBarItem = UITabBarItem(title: "myTabBarItem", image: #imageLiteral(resourceName: "second"), selectedImage: #imageLiteral(resourceName: "second"))
+        title = "Current Location"
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -54,8 +58,6 @@ class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate
         
         //visual tweaks
         view.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-        tabBarItem.image = #imageLiteral(resourceName: "first")
-        title = "Current Location"
         
         //button event handling
         getButton.addTarget(self, action: #selector(getLocation), for: .touchUpInside)
@@ -342,7 +344,7 @@ class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate
     }
     
     @objc func openDetailController() {
-        let destination = LocationDetailsViewController(location: location, address: addressLabel.text == nil ? "" : addressLabel.text!, placemark: placemark)
+        let destination = LocationDetailsViewController(location: location, address: addressLabel.text!, placemark: placemark)
         destination.managedObjectContext = self.managedObjectContext
         present(UINavigationController(rootViewController: destination), animated: true, completion: nil)
     }

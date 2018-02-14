@@ -19,9 +19,9 @@ class LocationDetailsViewController: UITableViewController, CategoryPickerTableV
     var date = Date()
     let formatter = DateFormatter()
     var managedObjectContext: NSManagedObjectContext!
-    var placemark: CLPlacemark!
+    var placemark: CLPlacemark?
     
-    init(location: CLLocation, address: String, placemark: CLPlacemark) {
+    init(location: CLLocation, address: String, placemark: CLPlacemark?) {
         
         self.location = location
         self.address = address
@@ -175,7 +175,10 @@ class LocationDetailsViewController: UITableViewController, CategoryPickerTableV
         locationToAdd.latitude = location.coordinate.latitude
         locationToAdd.longitude = location.coordinate.longitude
         locationToAdd.date = date
-        locationToAdd.placemark = placemark
+        
+        if let placemark = placemark {
+            locationToAdd.placemark = placemark
+        }
         
     
         

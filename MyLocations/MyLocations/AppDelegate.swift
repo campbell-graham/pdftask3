@@ -35,8 +35,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let currentLocationViewControllerNav = UINavigationController(rootViewController: currentLocationViewController)
         currentLocationViewController.managedObjectContext = self.managedObjectContext
         
+        let locationsViewController = LocationsViewController()
+        let locationsViewControllerNav = UINavigationController(rootViewController: locationsViewController)
+        
+        
         let tabController = UITabBarController()
-        tabController.viewControllers = [currentLocationViewControllerNav]
+        tabController.viewControllers = [currentLocationViewControllerNav, locationsViewControllerNav]
         
         //singleton, applies to all UINavigationBars app wide
         UINavigationBar.appearance().prefersLargeTitles = true
