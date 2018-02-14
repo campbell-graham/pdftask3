@@ -22,13 +22,16 @@ class LocationDetailsViewController: UITableViewController, CategoryPickerTableV
     var cancelButton: UIBarButtonItem!
     var location: CLLocation
     var address: String
+    var date = Date()
     let formatter = DateFormatter()
     var managedObjectContext: NSManagedObjectContext!
+    var placemark: CLPlacemark!
     
-    init(location: CLLocation, address: String) {
+    init(location: CLLocation, address: String, placemark: CLPlacemark) {
         
         self.location = location
         self.address = address
+        self.placemark = placemark
         formatter.dateFormat = "dd-MM-yyyy hh:mm a"
         desciptionTextView = UITextView()
         categoryLabel = UILabel()
@@ -162,7 +165,7 @@ class LocationDetailsViewController: UITableViewController, CategoryPickerTableV
                 cell.detailTextLabel?.text = address
             case 3:
                 cell.textLabel?.text = "Date"
-                cell.detailTextLabel?.text = formatter.string(from: Date())
+                cell.detailTextLabel?.text = formatter.string(from: date)
             default:
                 cell.textLabel?.text = ""
             }
@@ -176,9 +179,32 @@ class LocationDetailsViewController: UITableViewController, CategoryPickerTableV
     @objc func done() {
         let hudView = HudView.hud(inView: navigationController!.view, animated: true)
         hudView.text = "Tagged"
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
-            self.cancel()
+        
+        let locationToAdd = Location(context: managedObjectContext)
+        locationToAdd.locationDescription = (tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as! TextFieldTableViewCell).textField.text!
+        locationToAdd.category = (tableView.cellForRow(at: IndexPath(item: 1, section: 0))?.detailTextLabel?.text)!
+        locationToAdd.latitude = location.coordinate.latitude
+        locationToAdd.longitude = location.coordinate.longitude
+        locationToAdd.date = date
+        locationToAdd.placemark = placemark
+        
+    
+        
+        
+        
+        
+        do {
+            try managedObjectContext.save()
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
+                self.cancel()
+            }
+        } catch {
+            fatalError("Error: \(error)")
         }
+        
+        
+        
+       
         
     }
     
