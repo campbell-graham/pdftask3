@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreLocation
+import CoreData
 
 class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate {
     
@@ -29,6 +30,7 @@ class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate
     var performingReverseGeocoding = false
     var lastGeocodingError: Error?
     var timer: Timer?
+    var managedObjectContext: NSManagedObjectContext!
 
     init() {
         //object initialisation
@@ -336,11 +338,13 @@ class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate
             line2 += s
         }
         
-        return line1 + "\n" + line2
+        return line1 + "\n" + line2 
     }
     
     @objc func openDetailController() {
-        present(UINavigationController(rootViewController: LocationDetailsViewController(location: location, address: addressLabel.text!)), animated: true, completion: nil)
+        let destination = LocationDetailsViewController(location: location, address: addressLabel.text!)
+        destination.managedObjectContext = self.managedObjectContext
+        present(destination, animated: true, completion: nil)
     }
     
 

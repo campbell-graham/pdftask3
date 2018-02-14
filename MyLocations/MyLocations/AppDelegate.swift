@@ -33,6 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         let currentLocationViewController = CurrentLocationViewController()
         let currentLocationViewControllerNav = UINavigationController(rootViewController: currentLocationViewController)
+        currentLocationViewController.managedObjectContext = self.managedObjectContext
        
         let tabController = UITabBarController()
         tabController.viewControllers = [currentLocationViewControllerNav]

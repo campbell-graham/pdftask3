@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreLocation
+import CoreData
 
 class LocationDetailsViewController: UITableViewController, CategoryPickerTableViewControllerDelegate {
     
@@ -22,6 +23,7 @@ class LocationDetailsViewController: UITableViewController, CategoryPickerTableV
     var location: CLLocation
     var address: String
     let formatter = DateFormatter()
+    var managedObjectContext: NSManagedObjectContext!
     
     init(location: CLLocation, address: String) {
         
