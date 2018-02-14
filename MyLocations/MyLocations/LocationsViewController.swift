@@ -17,8 +17,8 @@ class LocationsViewController: UITableViewController {
     
     init() {
         super.init(style: .plain)
-        title = "Saved Locations"
         tabBarItem = UITabBarItem(title: "myTabBarItem", image: #imageLiteral(resourceName: "second"), selectedImage: #imageLiteral(resourceName: "second"))
+         title = "Saved Locations"
 
     }
     
@@ -28,18 +28,21 @@ class LocationsViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.tableFooterView = UIView()
-        
+    }
+    
+    //currently reloads everything from core data into the locations array every time the page appears, should be changed later if possible
+    override func viewDidAppear(_ animated: Bool) {
         let fetchRequest = NSFetchRequest<Location>()
         let entity = Location.entity()
         fetchRequest.entity = entity
         let sortDescriptor = NSSortDescriptor(key: "date", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptor]
-        
         do {
             locations = try managedObjectContect.fetch(fetchRequest)
         } catch {
             fatalCoreDataError(error)
         }
+        tableView.reloadData()
     }
 
     override func didReceiveMemoryWarning() {
@@ -66,6 +69,7 @@ class LocationsViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, editActionsForRowAt: IndexPath) -> [UITableViewRowAction]? {
         let more = UITableViewRowAction(style: .normal, title: "Edit") { action, index in
             let destination = LocationDetailsViewController(locationToEdit: self.locations[editActionsForRowAt.row])
+            destination.managedObjectContext = self.managedObjectContect
             self.present(UINavigationController(rootViewController: destination), animated: true, completion: nil)
         }
         more.backgroundColor = .lightGray

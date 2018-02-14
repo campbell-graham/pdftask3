@@ -182,15 +182,25 @@ class LocationDetailsViewController: UITableViewController, CategoryPickerTableV
     
     @objc func done() {
         let hudView = HudView.hud(inView: navigationController!.view, animated: true)
-        hudView.text = "Tagged"
         
-        let locationToAdd = Location(context: managedObjectContext)
+        let locationToAdd: Location
+        
+        if let temp = locationToEdit {
+            hudView.text = "Edited"
+            locationToAdd = temp
+        } else {
+            hudView.text = "Tagged"
+            locationToAdd = Location(context: managedObjectContext)
+            locationToAdd.latitude = (location?.coordinate.latitude)!
+            locationToAdd.address = address!
+            locationToAdd.longitude = (location?.coordinate.longitude)!
+            locationToAdd.date = date
+        }
+        
+        
         locationToAdd.locationDescription = (tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as! TextFieldTableViewCell).textField.text!
         locationToAdd.category = (tableView.cellForRow(at: IndexPath(item: 1, section: 0))?.detailTextLabel?.text)!
-        locationToAdd.latitude = (location?.coordinate.latitude)!
-        locationToAdd.address = address!
-        locationToAdd.longitude = (location?.coordinate.longitude)!
-        locationToAdd.date = date
+        
         
         if let placemark = placemark {
             locationToAdd.placemark = placemark
