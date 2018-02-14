@@ -12,12 +12,6 @@ import CoreData
 
 class LocationDetailsViewController: UITableViewController, CategoryPickerTableViewControllerDelegate {
     
-    var desciptionTextView: UITextView
-    var categoryLabel: UILabel
-    var latitudeLabel: UILabel
-    var longitudeLabel: UILabel
-    var addressLabel: UILabel
-    var dateLabel: UILabel
     var doneButton: UIBarButtonItem!
     var cancelButton: UIBarButtonItem!
     var location: CLLocation
@@ -33,12 +27,7 @@ class LocationDetailsViewController: UITableViewController, CategoryPickerTableV
         self.address = address
         self.placemark = placemark
         formatter.dateFormat = "dd-MM-yyyy hh:mm a"
-        desciptionTextView = UITextView()
-        categoryLabel = UILabel()
-        latitudeLabel = UILabel()
-        longitudeLabel = UILabel()
-        addressLabel = UILabel()
-        dateLabel = UILabel()
+
         super.init(style: .grouped)
     }
     
@@ -199,7 +188,7 @@ class LocationDetailsViewController: UITableViewController, CategoryPickerTableV
                 self.cancel()
             }
         } catch {
-            fatalError("Error: \(error)")
+            fatalCoreDataError(error)
         }
         
         
