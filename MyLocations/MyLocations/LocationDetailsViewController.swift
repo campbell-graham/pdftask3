@@ -180,11 +180,6 @@ class LocationDetailsViewController: UITableViewController, CategoryPickerTableV
             locationToAdd.placemark = placemark
         }
         
-    
-        
-        
-        
-        
         do {
             try managedObjectContext.save()
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
@@ -193,10 +188,6 @@ class LocationDetailsViewController: UITableViewController, CategoryPickerTableV
         } catch {
             fatalCoreDataError(error)
         }
-        
-        
-        
-       
         
     }
     
@@ -208,16 +199,4 @@ class LocationDetailsViewController: UITableViewController, CategoryPickerTableV
         tableView.cellForRow(at: IndexPath(item: 1, section: 0))?.detailTextLabel?.text = category
     }
     
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
