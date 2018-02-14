@@ -20,8 +20,10 @@ class LocationDetailsViewController: UITableViewController, CategoryPickerTableV
     let formatter = DateFormatter()
     var managedObjectContext: NSManagedObjectContext!
     var placemark: CLPlacemark?
+    var categoryName: String?
+    var locationToEdit: Location?
     
-    init(location: CLLocation, address: String, placemark: CLPlacemark?) {
+    init(location: CLLocation, address: String, placemark: CLPlacemark?, locationToEdit: Location?) {
         
         self.location = location
         self.address = address
@@ -38,7 +40,12 @@ class LocationDetailsViewController: UITableViewController, CategoryPickerTableV
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Tag Location"
+        
+        if let location = locationToEdit {
+            title = "Edit Locaiton"
+        } else {
+            title = "Tag Location"
+        }
         tableView.register(TextFieldTableViewCell.self, forCellReuseIdentifier: "textFieldCell")
         navigationItem.largeTitleDisplayMode = .never
         doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done))
@@ -132,7 +139,7 @@ class LocationDetailsViewController: UITableViewController, CategoryPickerTableV
             switch location.row {
             case 1:
                 cell.textLabel?.text = "Category"
-                cell.detailTextLabel?.text = "No Category"
+                cell.detailTextLabel?.text = locationToEdit != nil ? locationToEdit?.locationDescription : "No Description"
                 cell.accessoryType = .disclosureIndicator
             default:
                 print("Error: Cell location is invalid")
@@ -145,16 +152,16 @@ class LocationDetailsViewController: UITableViewController, CategoryPickerTableV
             switch location.row {
             case 0:
                 cell.textLabel?.text = "Latitude"
-                cell.detailTextLabel?.text = String(format: "%.8f", self.location.coordinate.latitude)
+                cell.detailTextLabel?.text = locationToEdit != nil ? String(format: "%.8f", (locationToEdit?.latitude)!) : String(format: "%.8f", self.location.coordinate.latitude)
             case 1:
                 cell.textLabel?.text = "Longitude"
-                cell.detailTextLabel?.text = String(format: "%.8f", self.location.coordinate.longitude)
+                cell.detailTextLabel?.text = locationToEdit != nil ? String(format: "%.8f", (locationToEdit?.longitude)!) : String(format: "%.8f", self.location.coordinate.longitude)
             case 2:
                 cell.textLabel?.text = "Address"
-                cell.detailTextLabel?.text = address
+                cell.detailTextLabel?.text = locationToEdit != nil ? locationToEdit?.address : "No Address"
             case 3:
                 cell.textLabel?.text = "Date"
-                cell.detailTextLabel?.text = formatter.string(from: date)
+                cell.detailTextLabel?.text = locationToEdit != nil ? formatter.string(from: (locationToEdit?.date)!) : formatter.string(from: date)
             default:
                 cell.textLabel?.text = ""
             }
@@ -173,6 +180,7 @@ class LocationDetailsViewController: UITableViewController, CategoryPickerTableV
         locationToAdd.locationDescription = (tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as! TextFieldTableViewCell).textField.text!
         locationToAdd.category = (tableView.cellForRow(at: IndexPath(item: 1, section: 0))?.detailTextLabel?.text)!
         locationToAdd.latitude = location.coordinate.latitude
+        locationToAdd.address = address
         locationToAdd.longitude = location.coordinate.longitude
         locationToAdd.date = date
         

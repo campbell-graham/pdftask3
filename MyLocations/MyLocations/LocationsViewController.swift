@@ -58,19 +58,7 @@ class LocationsViewController: UITableViewController {
         }
         let location = locations[indexPath.row]
         cell?.textLabel?.text = location.locationDescription
-        if let placemark = location.placemark {
-            var text = ""
-            if let s = placemark.subThoroughfare {
-                text += s + " " }
-            if let s = placemark.thoroughfare {
-                text += s + ", "
-            }
-            if let s = placemark.locality {
-                text += s }
-            cell?.detailTextLabel?.text = text
-        } else {
-            cell?.detailTextLabel?.text = ""
-        }
+        cell?.detailTextLabel?.text = location.address
         return cell!
     }
 
