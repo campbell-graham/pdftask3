@@ -13,7 +13,7 @@ import CoreLocation
 class LocationsViewController: UITableViewController {
     
     var locations = [Location]()
-    var managedObjectContect: NSManagedObjectContext!
+    var managedObjectContext: NSManagedObjectContext!
     
     init() {
         super.init(style: .plain)
@@ -38,7 +38,7 @@ class LocationsViewController: UITableViewController {
         let sortDescriptor = NSSortDescriptor(key: "date", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptor]
         do {
-            locations = try managedObjectContect.fetch(fetchRequest)
+            locations = try managedObjectContext.fetch(fetchRequest)
         } catch {
             fatalCoreDataError(error)
         }
@@ -69,14 +69,30 @@ class LocationsViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, editActionsForRowAt: IndexPath) -> [UITableViewRowAction]? {
         let more = UITableViewRowAction(style: .normal, title: "Edit") { action, index in
             let destination = LocationDetailsViewController(locationToEdit: self.locations[editActionsForRowAt.row])
-            destination.managedObjectContext = self.managedObjectContect
+            destination.managedObjectContext = self.managedObjectContext
             self.present(UINavigationController(rootViewController: destination), animated: true, completion: nil)
         }
         more.backgroundColor = .lightGray
     
         
         let share = UITableViewRowAction(style: .normal, title: "Delete") { action, index in
-            print("delete button tapped")
+            do {
+                let fetchRequest = NSFetchRequest<Location>()
+                let entity = Location.entity()
+                fetchRequest.entity = entity
+                if let result = try? self.managedObjectContext.fetch(fetchRequest) {
+                    for object in result {
+                        if object == self.locations[editActionsForRowAt.row] {
+                            self.managedObjectContext.delete(object)
+                            self.locations.remove(at: editActionsForRowAt.row)
+                        }
+                    }
+                }
+               try self.managedObjectContext.save()
+            } catch {
+                print("Error deleting/saving")
+            }
+            self.tableView.reloadData()
         }
         share.backgroundColor = .red
         

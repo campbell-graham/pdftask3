@@ -37,7 +37,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let locationsViewController = LocationsViewController()
         let locationsViewControllerNav = UINavigationController(rootViewController: locationsViewController)
-        locationsViewController.managedObjectContect = self.managedObjectContext
+        locationsViewController.managedObjectContext = self.managedObjectContext
         
         
         let tabController = UITabBarController()
