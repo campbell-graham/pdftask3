@@ -29,7 +29,7 @@ class LocationDetailsViewController: UITableViewController, CategoryPickerTableV
         self.address = address
         self.placemark = placemark
         formatter.dateFormat = "dd-MM-yyyy hh:mm a"
-
+        
         super.init(style: .grouped)
     }
     
@@ -43,7 +43,7 @@ class LocationDetailsViewController: UITableViewController, CategoryPickerTableV
         fatalError("init(coder:) has not been implemented")
     }
     
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -74,9 +74,9 @@ class LocationDetailsViewController: UITableViewController, CategoryPickerTableV
         }
         
         (tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as! TextFieldTableViewCell).textField.resignFirstResponder()
-    
+        
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -105,11 +105,13 @@ class LocationDetailsViewController: UITableViewController, CategoryPickerTableV
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
-    
+        
         if indexPath.section == 0 && indexPath.row == 1 {
             let destination = CategoryPickerTableViewController()
             destination.delegate = self
             navigationController?.pushViewController(destination, animated: true)
+        } else if indexPath.section == 1 && indexPath.row == 0 {
+            pickPhoto()
         }
     }
     
@@ -223,6 +225,62 @@ class LocationDetailsViewController: UITableViewController, CategoryPickerTableV
     
     func categoryPickerTableViewController(_ class: CategoryPickerTableViewController, didSelectCategory category: String) {
         tableView.cellForRow(at: IndexPath(item: 1, section: 0))?.detailTextLabel?.text = category
+    }
+    
+}
+
+extension LocationDetailsViewController:
+    UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    func takePhotoWithCamera() {
+        let imagePicker = UIImagePickerController()
+        imagePicker.sourceType = .camera
+        imagePicker.delegate = self
+        imagePicker.allowsEditing = true
+        present(imagePicker, animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func choosePhotoFromLibrary() {
+        let imagePicker = UIImagePickerController()
+        imagePicker.sourceType = .photoLibrary
+        imagePicker.delegate = self
+        imagePicker.allowsEditing = true
+        present(imagePicker, animated: true, completion: nil)
+    }
+    
+    func pickPhoto() {
+        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+            showPhotoMenu()
+        } else {
+            choosePhotoFromLibrary()
+        }
+    }
+    
+    func showPhotoMenu() {
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        let actionCancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        alert.addAction(actionCancel)
+        
+        let actionPhoto = UIAlertAction(title: "Take Photo", style: .default, handler: { _ in self.takePhotoWithCamera()})
+        
+        alert.addAction(actionPhoto)
+        
+        let actionLibrary = UIAlertAction(title: "Chose From Library", style: .default, handler: {_ in self.choosePhotoFromLibrary()})
+        
+        alert.addAction(actionLibrary)
+        
+        present(alert, animated: true, completion: nil)
+
     }
     
 }
