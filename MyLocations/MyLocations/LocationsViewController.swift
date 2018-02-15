@@ -95,7 +95,7 @@ class LocationsViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, editActionsForRowAt: IndexPath) -> [UITableViewRowAction]? {
         let more = UITableViewRowAction(style: .normal, title: "Edit") { action, index in
-            let destination = LocationDetailsViewController(locationToEdit: self.locations[editActionsForRowAt.row])
+            let destination = LocationDetailsViewController(locationToEdit: self.locationsToDisplay[editActionsForRowAt.section][editActionsForRowAt.row])
             destination.managedObjectContext = self.managedObjectContext
             self.present(UINavigationController(rootViewController: destination), animated: true, completion: nil)
         }
@@ -109,9 +109,11 @@ class LocationsViewController: UITableViewController {
                 fetchRequest.entity = entity
                 if let result = try? self.managedObjectContext.fetch(fetchRequest) {
                     for object in result {
-                        if object == self.locations[editActionsForRowAt.row] {
+                        print(object.locationDescription)
+                        if object == self.locationsToDisplay[editActionsForRowAt.section][editActionsForRowAt.row]{
                             self.managedObjectContext.delete(object)
-                            self.locations.remove(at: editActionsForRowAt.row)
+                            self.locationsToDisplay[editActionsForRowAt.section].remove(at: editActionsForRowAt.row)
+                            break
                         }
                     }
                 }
