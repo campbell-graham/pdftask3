@@ -80,6 +80,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
     func applyMapPins() {
         for l in locations {
             annotation.coordinate = CLLocationCoordinate2D(latitude: l.latitude, longitude: l.longitude)
+            annotation.title = l.locationDescription
             mapView.addAnnotation(annotation)
         }
     }

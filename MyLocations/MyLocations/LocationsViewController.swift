@@ -13,10 +13,12 @@ import CoreLocation
 class LocationsViewController: UITableViewController {
     
     var locations = [Location]()
+    var locationsToDisplay = [[Location]]()
     var managedObjectContext: NSManagedObjectContext!
+    var categories = [String]()
     
     init() {
-        super.init(style: .plain)
+        super.init(style: .grouped)
         tabBarItem = UITabBarItem(title: "myTabBarItem", image: #imageLiteral(resourceName: "second"), selectedImage: #imageLiteral(resourceName: "second"))
          title = "Saved Locations"
 
@@ -30,18 +32,40 @@ class LocationsViewController: UITableViewController {
         tableView.tableFooterView = UIView()
     }
     
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return categories[section]
+    }
+    
     //currently reloads everything from core data into the locations array every time the page appears, should be changed later if possible
     override func viewDidAppear(_ animated: Bool) {
+        
+        categories.removeAll()
+        locationsToDisplay.removeAll()
+        
+        
         let fetchRequest = NSFetchRequest<Location>()
         let entity = Location.entity()
         fetchRequest.entity = entity
-        let sortDescriptor = NSSortDescriptor(key: "date", ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptor]
+        let sortDescriptorDate = NSSortDescriptor(key: "date", ascending: true)
+        let sortDescriptorCategory = NSSortDescriptor(key: "category", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptorDate, sortDescriptorCategory]
         do {
             locations = try managedObjectContext.fetch(fetchRequest)
         } catch {
             fatalCoreDataError(error)
         }
+        
+        for l in locations {
+            if !categories.contains(l.category) {
+                categories.append(l.category)
+            }
+        }
+        
+        
+        for c in categories {
+            locationsToDisplay.append(locations.filter({$0.category == c}))
+        }
+        
         tableView.reloadData()
     }
 
@@ -51,8 +75,12 @@ class LocationsViewController: UITableViewController {
 
     // MARK: - Table view data source
 
+    override func numberOfSections(in tableView: UITableView) -> Int {
+       return categories.count
+    }
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return locations.count
+        return locationsToDisplay[section].count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -60,9 +88,8 @@ class LocationsViewController: UITableViewController {
         if cell == nil {
             cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
         }
-        let location = locations[indexPath.row]
-        cell?.textLabel?.text = location.locationDescription
-        cell?.detailTextLabel?.text = location.address
+        cell?.textLabel?.text = locationsToDisplay[indexPath.section][indexPath.row].locationDescription
+        cell?.detailTextLabel?.text = locationsToDisplay[indexPath.section][indexPath.row].address
         return cell!
     }
     
