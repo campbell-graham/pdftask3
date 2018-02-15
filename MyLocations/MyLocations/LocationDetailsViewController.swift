@@ -22,6 +22,8 @@ class LocationDetailsViewController: UITableViewController, CategoryPickerTableV
     var placemark: CLPlacemark?
     var categoryName: String?
     var locationToEdit: Location?
+    var imageView = UIImageView()
+    var image: UIImage?
     
     init(location: CLLocation, address: String, placemark: CLPlacemark?) {
         
@@ -100,6 +102,11 @@ class LocationDetailsViewController: UITableViewController, CategoryPickerTableV
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        
+        if image != nil && indexPath.section == 1 && indexPath.row == 0 {
+            return 280
+        }
+        
         return indexPath.section == 0 && indexPath.row == 0 ? 100 : 50
     }
     
@@ -155,8 +162,15 @@ class LocationDetailsViewController: UITableViewController, CategoryPickerTableV
                 print("Error: Cell location is invalid")
             }
         } else if location.section == 1 {
-            cell.textLabel?.text = "Add Photo"
             cell.accessoryType = .disclosureIndicator
+            if image != nil {
+                imageView.frame = CGRect(x: 10, y: 10, width: 260, height: 260)
+                imageView.image = image
+                cell.addSubview(imageView)
+            } else {
+                cell.textLabel?.text = "Add Photo"
+            }
+            
         } else if location.section == 2 {
             cell.selectionStyle = .none
             switch location.row {
@@ -241,6 +255,14 @@ extension LocationDetailsViewController:
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        
+        image = info[UIImagePickerControllerEditedImage] as? UIImage
+        
+        if let theImage = image {
+            imageView.image = theImage
+        }
+        
+        tableView.reloadData()
         dismiss(animated: true, completion: nil)
     }
     
