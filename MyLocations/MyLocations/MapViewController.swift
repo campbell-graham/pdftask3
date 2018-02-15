@@ -10,11 +10,12 @@ import UIKit
 import MapKit
 import CoreData
 
-class MapViewController: UIViewController {
+class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
     
     var mapView: MKMapView
     var managedObjectContext: NSManagedObjectContext!
     var showUserBarButtonItem: UIBarButtonItem!
+    let locationManager = CLLocationManager()
     
     init() {
         mapView = MKMapView()
@@ -32,7 +33,13 @@ class MapViewController: UIViewController {
         super.viewDidLoad()
         
         navigationItem.rightBarButtonItem = showUserBarButtonItem
-
+        
+        locationManager.requestAlwaysAuthorization()
+        locationManager.startUpdatingLocation()
+        locationManager.delegate = self
+        mapView.userTrackingMode = .none
+        mapView.showsUserLocation = true
+        
         view.addSubview(mapView)
         
         mapView.translatesAutoresizingMaskIntoConstraints = false
@@ -46,14 +53,15 @@ class MapViewController: UIViewController {
     }
     
     @objc func showUserLocation() {
-        print("Will now show the user's location")
+        let locationToZoom = CLLocationCoordinate2D(latitude: mapView.userLocation.coordinate.latitude, longitude: mapView.userLocation.coordinate.longitude)
+        let region = MKCoordinateRegionMakeWithDistance(locationToZoom, 1000, 1000)
+        mapView.setRegion(mapView.regionThatFits(region), animated: true)
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
 
     /*
     // MARK: - Navigation
