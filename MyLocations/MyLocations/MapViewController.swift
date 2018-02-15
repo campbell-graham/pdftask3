@@ -16,6 +16,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
     var managedObjectContext: NSManagedObjectContext!
     var showUserBarButtonItem: UIBarButtonItem!
     let locationManager = CLLocationManager()
+    var locations = [Location]()
+    let annotation = MKPointAnnotation()
     
     init() {
         mapView = MKMapView()
@@ -50,12 +52,36 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
             mapView.topAnchor.constraint(equalTo: view.topAnchor),
             mapView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             ])
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        loadUserData()
+        applyMapPins()
     }
     
     @objc func showUserLocation() {
         let locationToZoom = CLLocationCoordinate2D(latitude: mapView.userLocation.coordinate.latitude, longitude: mapView.userLocation.coordinate.longitude)
         let region = MKCoordinateRegionMakeWithDistance(locationToZoom, 1000, 1000)
         mapView.setRegion(mapView.regionThatFits(region), animated: true)
+    }
+    
+    func loadUserData() {
+        let fetchRequest = NSFetchRequest<Location>()
+        let entity = Location.entity()
+        fetchRequest.entity = entity
+        do {
+            locations = try managedObjectContext.fetch(fetchRequest)
+        } catch {
+            fatalCoreDataError(error)
+        }
+    }
+    
+    func applyMapPins() {
+        for l in locations {
+            annotation.coordinate = CLLocationCoordinate2D(latitude: l.latitude, longitude: l.longitude)
+            mapView.addAnnotation(annotation)
+        }
     }
 
     override func didReceiveMemoryWarning() {
