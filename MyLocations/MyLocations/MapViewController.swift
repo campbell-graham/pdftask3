@@ -58,6 +58,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        mapView.deselectAnnotation(mapView.selectedAnnotations.first, animated: false)
         loadUserData()
         applyMapPins()
     }
@@ -123,6 +124,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
     }
     
     @objc func showLocationDetails(_ sender: UIButton) {
-        
+        let destination = LocationDetailsViewController(locationToEdit: locations[sender.tag])
+        destination.managedObjectContext = self.managedObjectContext
+        present(UINavigationController(rootViewController: destination), animated: true, completion: nil)
     }
 }
