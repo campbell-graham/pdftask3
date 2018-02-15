@@ -164,10 +164,12 @@ class LocationDetailsViewController: UITableViewController, CategoryPickerTableV
         } else if location.section == 1 {
             cell.accessoryType = .disclosureIndicator
             if image != nil {
+                imageView.tag = 1
                 imageView.frame = CGRect(x: 10, y: 10, width: 260, height: 260)
                 imageView.image = image
-                cell.addSubview(imageView)
+                cell.contentView.addSubview(imageView)
             } else {
+                cell.contentView.viewWithTag(1)?.removeFromSuperview()
                 cell.textLabel?.text = "Add Photo"
             }
             
@@ -300,6 +302,15 @@ extension LocationDetailsViewController:
         let actionLibrary = UIAlertAction(title: "Chose From Library", style: .default, handler: {_ in self.choosePhotoFromLibrary()})
         
         alert.addAction(actionLibrary)
+        
+        if image != nil {
+            let actionRemove = UIAlertAction(title: "Remove Photo", style: .default, handler: {_ in
+                self.image = nil
+                self.tableView.reloadData()
+            })
+            alert.addAction(actionRemove)
+        }
+    
         
         present(alert, animated: true, completion: nil)
 
