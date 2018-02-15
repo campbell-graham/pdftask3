@@ -34,6 +34,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
     override func viewDidLoad() {
         super.viewDidLoad()
         
+         mapView.delegate = self
+        
         navigationItem.rightBarButtonItem = showUserBarButtonItem
         
         locationManager.requestAlwaysAuthorization()
@@ -78,11 +80,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
     }
     
     func applyMapPins() {
-        for l in locations {
-            annotation.coordinate = CLLocationCoordinate2D(latitude: l.latitude, longitude: l.longitude)
-            annotation.title = l.locationDescription
-            mapView.addAnnotation(annotation)
-        }
+        mapView.addAnnotations(locations)
     }
 
     override func didReceiveMemoryWarning() {
@@ -90,14 +88,41 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
         // Dispose of any resources that can be recreated.
     }
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        guard annotation is Location else {
+            return nil
+        }
+        
+        let identifier = "Location"
+        
+        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
+        
+        if annotationView == nil {
+            let pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+            
+            pinView.isEnabled = true
+            pinView.canShowCallout = true
+            pinView.animatesDrop = false
+            pinView.pinTintColor = UIColor(red: 0.32, green: 0.82, blue: 0.4, alpha: 1)
+            
+            let rightButton = UIButton(type: .detailDisclosure)
+            rightButton.addTarget(self, action: #selector(showLocationDetails), for: .touchUpInside)
+            pinView.rightCalloutAccessoryView = rightButton
+            annotationView = pinView
+        }
+        
+        if let annotationView = annotationView {
+            annotationView.annotation = annotation
+            let button = annotationView.rightCalloutAccessoryView as! UIButton
+            if let index = locations.index(of: annotation as! Location) {
+                button.tag = index
+            }
+        }
+        
+        return annotationView
     }
-    */
-
+    
+    @objc func showLocationDetails(_ sender: UIButton) {
+        
+    }
 }
