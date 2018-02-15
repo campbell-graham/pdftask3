@@ -14,11 +14,12 @@ class MapViewController: UIViewController {
     
     var mapView: MKMapView
     var managedObjectContext: NSManagedObjectContext!
-    
+    var showUserBarButtonItem: UIBarButtonItem!
     
     init() {
         mapView = MKMapView()
         super.init(nibName: nil, bundle: nil)
+        showUserBarButtonItem = UIBarButtonItem(title: "Show User", style: .plain, target: self, action: #selector(showUserLocation))
         tabBarItem = UITabBarItem(title: "Map", image: #imageLiteral(resourceName: "first"), selectedImage: #imageLiteral(resourceName: "first"))
         title = "Map"
     }
@@ -29,6 +30,8 @@ class MapViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        navigationItem.rightBarButtonItem = showUserBarButtonItem
 
         view.addSubview(mapView)
         
@@ -40,6 +43,10 @@ class MapViewController: UIViewController {
             mapView.topAnchor.constraint(equalTo: view.topAnchor),
             mapView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             ])
+    }
+    
+    @objc func showUserLocation() {
+        print("Will now show the user's location")
     }
 
     override func didReceiveMemoryWarning() {
