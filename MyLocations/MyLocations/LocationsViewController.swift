@@ -86,11 +86,12 @@ class LocationsViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! LocationTableViewCell
+        cell.selectionStyle = .none
         let locationToDisplay = locationsToDisplay[indexPath.section][indexPath.row]
         if locationToDisplay.hasPhoto {
            cell.locationImageView.image = locationToDisplay.photoImage
         } else {
-            cell.locationImageView.image = nil
+            cell.locationImageView.image = #imageLiteral(resourceName: "second")
         }
         
         cell.locationDescriptionLabel.text = locationToDisplay.locationDescription
