@@ -111,6 +111,7 @@ class LocationsViewController: UITableViewController {
                     for object in result {
                         print(object.locationDescription)
                         if object == self.locationsToDisplay[editActionsForRowAt.section][editActionsForRowAt.row]{
+                            object.removePhotoFile()
                             self.managedObjectContext.delete(object)
                             self.locationsToDisplay[editActionsForRowAt.section].remove(at: editActionsForRowAt.row)
                             break
