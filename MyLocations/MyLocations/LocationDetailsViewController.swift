@@ -24,6 +24,8 @@ class LocationDetailsViewController: UITableViewController, CategoryPickerTableV
     var locationToEdit: Location?
     var imageView = UIImageView()
     var image: UIImage?
+    var descriptionText = ""
+    var categoryText = "No Category"
     
     init(location: CLLocation, address: String, placemark: CLPlacemark?) {
         
@@ -35,8 +37,10 @@ class LocationDetailsViewController: UITableViewController, CategoryPickerTableV
         super.init(style: .grouped)
     }
     
-    init(locationToEdit: Location?) {
+    init(locationToEdit: Location) {
         self.locationToEdit = locationToEdit
+        self.descriptionText = (self.locationToEdit?.locationDescription)!
+        self.categoryText = (self.locationToEdit?.category)!
         formatter.dateFormat = "dd-MM-yyyy hh:mm a"
         super.init(style: .grouped)
     }
@@ -138,7 +142,7 @@ class LocationDetailsViewController: UITableViewController, CategoryPickerTableV
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 && indexPath.row == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "textFieldCell", for: indexPath) as! TextFieldTableViewCell
-            cell.textField.text = locationToEdit != nil ? locationToEdit?.locationDescription : ""
+            cell.textField.text = descriptionText
             return cell
         }
         
@@ -156,7 +160,7 @@ class LocationDetailsViewController: UITableViewController, CategoryPickerTableV
             switch location.row {
             case 1:
                 cell.textLabel?.text = "Category"
-                cell.detailTextLabel?.text = locationToEdit != nil ? locationToEdit?.category : "No Category"
+                cell.detailTextLabel?.text = categoryText
                 cell.accessoryType = .disclosureIndicator
             default:
                 print("Error: Cell location is invalid")
@@ -263,7 +267,8 @@ extension LocationDetailsViewController:
         if let theImage = image {
             imageView.image = theImage
         }
-        
+        descriptionText = (tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as! TextFieldTableViewCell).textField.text!
+        categoryText = (tableView.cellForRow(at: IndexPath(row: 1, section: 0))?.detailTextLabel?.text)!
         tableView.reloadData()
         dismiss(animated: true, completion: nil)
     }
@@ -306,6 +311,8 @@ extension LocationDetailsViewController:
         if image != nil {
             let actionRemove = UIAlertAction(title: "Remove Photo", style: .default, handler: {_ in
                 self.image = nil
+                self.descriptionText = (self.tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as! TextFieldTableViewCell).textField.text!
+                self.categoryText = (self.tableView.cellForRow(at: IndexPath(row: 1, section: 0))?.detailTextLabel?.text)!
                 self.tableView.reloadData()
             })
             alert.addAction(actionRemove)
