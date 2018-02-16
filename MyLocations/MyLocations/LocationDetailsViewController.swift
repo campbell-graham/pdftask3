@@ -214,6 +214,7 @@ class LocationDetailsViewController: UITableViewController, CategoryPickerTableV
             hudView.text = "Tagged"
             locationToAdd = Location(context: managedObjectContext)
             locationToAdd.latitude = (location?.coordinate.latitude)!
+            locationToAdd.photoID = nil
             locationToAdd.address = address!
             locationToAdd.longitude = (location?.coordinate.longitude)!
             locationToAdd.date = date
@@ -226,6 +227,20 @@ class LocationDetailsViewController: UITableViewController, CategoryPickerTableV
         
         if let placemark = placemark {
             locationToAdd.placemark = placemark
+        }
+        
+        
+        if let image = image {
+            if !locationToAdd.hasPhoto {
+                locationToAdd.photoID = Location.nextPhotoID() as NSNumber
+            }
+            if let data = UIImageJPEGRepresentation(image, 0.5) {
+                do {
+                    try data.write(to: locationToAdd.photoURL, options: .atomic)
+                } catch {
+                    print("Error saving photo")
+                }
+            }
         }
         
         do {
