@@ -57,6 +57,7 @@ public class Location: NSManagedObject, MKAnnotation {
             } catch {
                 print("Error deleting image")
             }
+            photoID = nil
         }
     }
 

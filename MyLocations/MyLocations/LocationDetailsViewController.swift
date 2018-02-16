@@ -42,6 +42,9 @@ class LocationDetailsViewController: UITableViewController, CategoryPickerTableV
         self.descriptionText = (self.locationToEdit?.locationDescription)!
         self.categoryText = (self.locationToEdit?.category)!
         formatter.dateFormat = "dd-MM-yyyy hh:mm a"
+        if locationToEdit.hasPhoto {
+            image = locationToEdit.photoImage
+        }
         super.init(style: .grouped)
     }
     
@@ -241,6 +244,8 @@ class LocationDetailsViewController: UITableViewController, CategoryPickerTableV
                     print("Error saving photo")
                 }
             }
+        } else if locationToAdd.hasPhoto {
+            locationToAdd.removePhotoFile()
         }
         
         do {

@@ -88,6 +88,13 @@ class LocationsViewController: UITableViewController {
         if cell == nil {
             cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
         }
+        if locationsToDisplay[indexPath.section][indexPath.row].hasPhoto {
+            cell?.imageView?.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
+            cell?.imageView?.image = locationsToDisplay[indexPath.section][indexPath.row].photoImage
+        } else {
+            cell?.imageView?.image = nil
+        }
+        
         cell?.textLabel?.text = locationsToDisplay[indexPath.section][indexPath.row].locationDescription
         cell?.detailTextLabel?.text = locationsToDisplay[indexPath.section][indexPath.row].address
         return cell!
