@@ -39,6 +39,8 @@ class LocationTableViewCell: UITableViewCell {
             locationCategoryLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
             locationCategoryLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -10)
             ])
+        
+        locationDescriptionLabel.font = UIFont.boldSystemFont(ofSize: 16)
     }
     
     required init?(coder aDecoder: NSCoder) {
