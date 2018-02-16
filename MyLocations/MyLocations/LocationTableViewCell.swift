@@ -28,14 +28,16 @@ class LocationTableViewCell: UITableViewCell {
         NSLayoutConstraint.activate([
             locationImageView.leftAnchor.constraint(equalTo: leftAnchor, constant: 10),
             locationImageView.topAnchor.constraint(equalTo: topAnchor, constant: 10),
-            locationImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 10),
+            locationImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
+            locationImageView.widthAnchor.constraint(equalToConstant: 52),
+            locationImageView.heightAnchor.constraint(equalToConstant: 52),
             locationDescriptionLabel.leftAnchor.constraint(equalTo: locationImageView.rightAnchor, constant: 10),
             locationDescriptionLabel.topAnchor.constraint(equalTo: topAnchor, constant: 10),
-            locationDescriptionLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: 10),
+            locationDescriptionLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -10),
             locationCategoryLabel.leftAnchor.constraint(equalTo: locationImageView.rightAnchor, constant: 10),
             locationCategoryLabel.topAnchor.constraint(equalTo: locationDescriptionLabel.bottomAnchor, constant: 10),
-            locationCategoryLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 10),
-            locationCategoryLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: 10)
+            locationCategoryLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
+            locationCategoryLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -10)
             ])
     }
     

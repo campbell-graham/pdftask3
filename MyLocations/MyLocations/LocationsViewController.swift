@@ -30,6 +30,7 @@ class LocationsViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.tableFooterView = UIView()
+        tableView.register(LocationTableViewCell.self, forCellReuseIdentifier: "cell")
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -84,20 +85,17 @@ class LocationsViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCell(withIdentifier: "cell")
-        if cell == nil {
-            cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
-        }
-        if locationsToDisplay[indexPath.section][indexPath.row].hasPhoto {
-            cell?.imageView?.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
-            cell?.imageView?.image = locationsToDisplay[indexPath.section][indexPath.row].photoImage
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! LocationTableViewCell
+        let locationToDisplay = locationsToDisplay[indexPath.section][indexPath.row]
+        if locationToDisplay.hasPhoto {
+           cell.locationImageView.image = locationToDisplay.photoImage
         } else {
-            cell?.imageView?.image = nil
+            cell.locationImageView.image = nil
         }
         
-        cell?.textLabel?.text = locationsToDisplay[indexPath.section][indexPath.row].locationDescription
-        cell?.detailTextLabel?.text = locationsToDisplay[indexPath.section][indexPath.row].address
-        return cell!
+        cell.locationDescriptionLabel.text = locationToDisplay.locationDescription
+        cell.locationCategoryLabel.text = locationToDisplay.address
+        return cell
     }
     
     override func tableView(_ tableView: UITableView, editActionsForRowAt: IndexPath) -> [UITableViewRowAction]? {
