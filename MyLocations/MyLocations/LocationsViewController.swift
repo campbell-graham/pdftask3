@@ -32,7 +32,6 @@ class LocationsViewController: UITableViewController {
         tableView.tableFooterView = UIView()
         tableView.register(LocationTableViewCell.self, forCellReuseIdentifier: "cell")
         view.backgroundColor = AppColors.backgroundColor
-        UILabel.appearance().textColor = AppColors.textColor
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {

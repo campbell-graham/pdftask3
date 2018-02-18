@@ -39,6 +39,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().largeTitleTextAttributes = [
             NSAttributedStringKey.foregroundColor: AppColors.textColor ]
         
+        UITabBar.appearance().barTintColor = AppColors.barTintColor
+        UITabBar.appearance().tintColor = #colorLiteral(red: 0.9529411793, green: 0.6862745285, blue: 0.1333333403, alpha: 1)
         
         let locationsViewController = LocationsViewController()
         let locationsViewControllerNav = UINavigationController(rootViewController: locationsViewController)
@@ -57,6 +59,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         //singleton, applies to all UINavigationBars app wide
         UINavigationBar.appearance().prefersLargeTitles = true
+        
+        UILabel.appearance().textColor = AppColors.textColor
         
         window?.rootViewController = tabController
         window?.makeKeyAndVisible()
