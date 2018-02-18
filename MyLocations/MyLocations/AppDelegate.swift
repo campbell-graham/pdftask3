@@ -35,6 +35,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let currentLocationViewControllerNav = UINavigationController(rootViewController: currentLocationViewController)
         currentLocationViewController.managedObjectContext = self.managedObjectContext
         
+        UINavigationBar.appearance().barTintColor = AppColors.barTintColor
+        UINavigationBar.appearance().largeTitleTextAttributes = [
+            NSAttributedStringKey.foregroundColor: AppColors.textColor ]
+        
+        
         let locationsViewController = LocationsViewController()
         let locationsViewControllerNav = UINavigationController(rootViewController: locationsViewController)
         locationsViewController.managedObjectContext = self.managedObjectContext
@@ -45,6 +50,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let tabController = UITabBarController()
         tabController.viewControllers = [currentLocationViewControllerNav, locationsViewControllerNav, mapViewControllerNav]
+        
+        //not quite working yet
+//        tabController.tabBar.tintColor = AppColors.backgroundColor
+//        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedStringKey.foregroundColor: AppColors.textColor], for: .normal)
         
         //singleton, applies to all UINavigationBars app wide
         UINavigationBar.appearance().prefersLargeTitles = true

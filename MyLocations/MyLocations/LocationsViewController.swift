@@ -20,7 +20,7 @@ class LocationsViewController: UITableViewController {
     init() {
         super.init(style: .grouped)
         tabBarItem = UITabBarItem(title: "myTabBarItem", image: #imageLiteral(resourceName: "second"), selectedImage: #imageLiteral(resourceName: "second"))
-         title = "Saved Locations"
+        title = "Saved Locations"
 
     }
     
@@ -31,6 +31,8 @@ class LocationsViewController: UITableViewController {
         super.viewDidLoad()
         tableView.tableFooterView = UIView()
         tableView.register(LocationTableViewCell.self, forCellReuseIdentifier: "cell")
+        view.backgroundColor = AppColors.backgroundColor
+        UILabel.appearance().textColor = AppColors.textColor
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
