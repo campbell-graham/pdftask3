@@ -34,7 +34,10 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
     override func viewDidLoad() {
         super.viewDidLoad()
         
-         mapView.delegate = self
+        view.backgroundColor = AppColors.backgroundColor
+        
+        mapView.backgroundColor = AppColors.backgroundColor
+        mapView.delegate = self
         
         navigationItem.rightBarButtonItem = showUserBarButtonItem
         
@@ -49,10 +52,10 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
         mapView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            mapView.leftAnchor.constraint(equalTo: view.leftAnchor),
-            mapView.rightAnchor.constraint(equalTo: view.rightAnchor),
-            mapView.topAnchor.constraint(equalTo: view.topAnchor),
-            mapView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            mapView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
+            mapView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
+            mapView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            mapView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             ])
         
     }
