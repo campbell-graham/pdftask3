@@ -19,7 +19,7 @@ class LocationsViewController: UITableViewController {
     
     init() {
         super.init(style: .grouped)
-        tabBarItem = UITabBarItem(title: "myTabBarItem", image: #imageLiteral(resourceName: "second"), selectedImage: #imageLiteral(resourceName: "second"))
+        tabBarItem = UITabBarItem(title: "myTabBarItem", image: #imageLiteral(resourceName: "stack"), selectedImage: #imageLiteral(resourceName: "stack"))
         title = "Saved Locations"
 
     }

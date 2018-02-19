@@ -44,7 +44,7 @@ class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate
         tagButton = UIButton(type: .system)
         getButton = UIButton(type: .system)
         super.init(nibName: nil, bundle: nil)
-        tabBarItem = UITabBarItem(title: "myTabBarItem", image: #imageLiteral(resourceName: "first"), selectedImage: #imageLiteral(resourceName: "first"))
+        tabBarItem = UITabBarItem(title: "myTabBarItem", image: #imageLiteral(resourceName: "marker"), selectedImage: #imageLiteral(resourceName: "marker"))
         title = "Current Location"
         
     }

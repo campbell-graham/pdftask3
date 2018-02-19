@@ -23,7 +23,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
         mapView = MKMapView()
         super.init(nibName: nil, bundle: nil)
         showUserBarButtonItem = UIBarButtonItem(title: "Show User", style: .plain, target: self, action: #selector(showUserLocation))
-        tabBarItem = UITabBarItem(title: "Map", image: #imageLiteral(resourceName: "first"), selectedImage: #imageLiteral(resourceName: "first"))
+        tabBarItem = UITabBarItem(title: "Map", image: #imageLiteral(resourceName: "globe"), selectedImage: #imageLiteral(resourceName: "globe"))
         title = "Map"
     }
     
