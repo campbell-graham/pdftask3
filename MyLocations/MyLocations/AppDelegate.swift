@@ -41,9 +41,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             NSAttributedStringKey.foregroundColor: AppColors.textColor ]
         UINavigationBar.appearance().largeTitleTextAttributes = [
             NSAttributedStringKey.foregroundColor: AppColors.textColor ]
+        UINavigationBar.appearance().tintColor = AppColors.buttonTextColor
         
         UITabBar.appearance().barTintColor = AppColors.barTintColor
-        UITabBar.appearance().tintColor = #colorLiteral(red: 0.9529411793, green: 0.6862745285, blue: 0.1333333403, alpha: 1)
+        UITabBar.appearance().tintColor = AppColors.buttonTextColor
+        UIButton.appearance().tintColor = AppColors.buttonTextColor
         
         let locationsViewController = LocationsViewController()
         let locationsViewControllerNav = UINavigationController(rootViewController: locationsViewController)

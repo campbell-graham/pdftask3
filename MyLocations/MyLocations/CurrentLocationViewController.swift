@@ -103,11 +103,11 @@ class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate
             containerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             containerView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             containerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            containerView.bottomAnchor.constraint(lessThanOrEqualTo: getButton.topAnchor),
             //message label
             messageLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
             messageLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
-            messageLabel.topAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.topAnchor, constant: 26),
+            messageLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 26),
+            messageLabel.heightAnchor.constraint(equalToConstant: 20),
             //latitude text label
             latitudeTextLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
             latitudeTextLabel.trailingAnchor.constraint(equalTo: latitudeValueLabel.leadingAnchor, constant: -20),
@@ -387,6 +387,49 @@ class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate
     func hideLogoView() {
         logoVisible = false
         containerView.isHidden = false
+        containerView.center.x = view.bounds.size.width * 2
+        let centerX = view.bounds.midX
+        
+        
+        let panelMover = CABasicAnimation(keyPath: "position")
+        panelMover.isRemovedOnCompletion = false
+        panelMover.fillMode = kCAFillModeForwards
+        panelMover.duration = 0.6
+        panelMover.fromValue = NSValue(cgPoint: containerView.center)
+        panelMover.toValue = NSValue(cgPoint:
+            CGPoint(x: centerX, y: containerView.center.y))
+        panelMover.timingFunction = CAMediaTimingFunction(
+            name: kCAMediaTimingFunctionEaseOut)
+        panelMover.delegate = self
+        containerView.layer.add(panelMover, forKey: "panelMover")
+        
+        let logoMover = CABasicAnimation(keyPath: "position")
+        logoMover.isRemovedOnCompletion = false
+        logoMover.fillMode = kCAFillModeForwards
+        logoMover.duration = 0.5
+        logoMover.fromValue = NSValue(cgPoint: logoButton.center)
+        logoMover.toValue = NSValue(cgPoint:
+            CGPoint(x: -centerX, y: logoButton.center.y))
+        logoMover.timingFunction = CAMediaTimingFunction(
+            name: kCAMediaTimingFunctionEaseIn)
+        logoButton.layer.add(logoMover, forKey: "logoMover")
+        let logoRotator = CABasicAnimation(keyPath:
+            "transform.rotation.z")
+        logoRotator.isRemovedOnCompletion = false
+        logoRotator.fillMode = kCAFillModeForwards
+        logoRotator.duration = 0.5
+        logoRotator.fromValue = 0.0
+        logoRotator.toValue = -2 * Double.pi
+        logoRotator.timingFunction = CAMediaTimingFunction(
+            name: kCAMediaTimingFunctionEaseIn)
+        logoButton.layer.add(logoRotator, forKey: "logoRotator")
+    }
+    
+    func animationDidStop(_ anim: CAAnimation,
+                          finished flag: Bool) {
+        containerView.layer.removeAllAnimations()
+        containerView.center.x = view.bounds.size.width / 2
+        logoButton.layer.removeAllAnimations()
         logoButton.removeFromSuperview()
     }
     
