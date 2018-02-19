@@ -10,7 +10,7 @@ import UIKit
 import CoreLocation
 import CoreData
 
-class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate {
+class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate, CAAnimationDelegate {
     
     
     var messageLabel: UILabel
@@ -31,6 +31,17 @@ class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate
     var lastGeocodingError: Error?
     var timer: Timer?
     var managedObjectContext: NSManagedObjectContext!
+    var containerView = UIView()
+    var logoVisible = false
+    lazy var logoButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setBackgroundImage(#imageLiteral(resourceName: "logo"), for: .normal)
+        button.sizeToFit()
+        button.addTarget(self, action: #selector(getLocation), for: .touchUpInside)
+        button.center.x = self.view.bounds.midX
+        button.center.y = 220
+        return button
+    }()
 
     init() {
         //object initialisation
@@ -58,22 +69,26 @@ class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate
         
         //visual tweaks
         view.backgroundColor = AppColors.backgroundColor
+        containerView.isUserInteractionEnabled = true
         
         //button event handling
         getButton.addTarget(self, action: #selector(getLocation), for: .touchUpInside)
         tagButton.addTarget(self, action: #selector(openDetailController), for: .touchUpInside)
         
         //add to view
-        view.addSubview(messageLabel)
-        view.addSubview(latitudeValueLabel)
-        view.addSubview(longitudeValueLabel)
-        view.addSubview(latitudeTextLabel)
-        view.addSubview(longitudeTextLabel)
-        view.addSubview(addressLabel)
-        view.addSubview(tagButton)
+        containerView.addSubview(messageLabel)
+        containerView.addSubview(latitudeValueLabel)
+        containerView.addSubview(longitudeValueLabel)
+        containerView.addSubview(latitudeTextLabel)
+        containerView.addSubview(longitudeTextLabel)
+        containerView.addSubview(addressLabel)
+        containerView.addSubview(tagButton)
+        view.addSubview(containerView)
         view.addSubview(getButton)
+        
     
         //constraint set up
+        containerView.translatesAutoresizingMaskIntoConstraints = false
         messageLabel.translatesAutoresizingMaskIntoConstraints = false
         latitudeValueLabel.translatesAutoresizingMaskIntoConstraints = false
         longitudeValueLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -84,31 +99,37 @@ class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate
         getButton.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
+            //container view
+            containerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            containerView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            containerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            containerView.bottomAnchor.constraint(lessThanOrEqualTo: getButton.topAnchor),
             //message label
-            messageLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
-            messageLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
-            messageLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 26),
+            messageLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
+            messageLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
+            messageLabel.topAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.topAnchor, constant: 26),
             //latitude text label
-            latitudeTextLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+            latitudeTextLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
             latitudeTextLabel.trailingAnchor.constraint(equalTo: latitudeValueLabel.leadingAnchor, constant: -20),
             latitudeTextLabel.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: 26),
             //longitude text label
-            longitudeTextLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+            longitudeTextLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
             longitudeTextLabel.trailingAnchor.constraint(equalTo: longitudeValueLabel.leadingAnchor),
             longitudeTextLabel.topAnchor.constraint(equalTo: latitudeTextLabel.bottomAnchor, constant: 26),
             //latitude value label
-            latitudeValueLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+            latitudeValueLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
             latitudeValueLabel.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: 26),
             //longitude value label
-            longitudeValueLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+            longitudeValueLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
             longitudeValueLabel.topAnchor.constraint(equalTo: latitudeValueLabel.bottomAnchor, constant: 26),
             //address label
-            addressLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
-            addressLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+            addressLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
+            addressLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
             addressLabel.topAnchor.constraint(equalTo: longitudeValueLabel.bottomAnchor, constant: 26),
             //tag button
-            tagButton.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            tagButton.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
             tagButton.topAnchor.constraint(equalTo: addressLabel.bottomAnchor, constant: 26),
+            tagButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
             //get button
             getButton.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
             getButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -26)
@@ -135,6 +156,10 @@ class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate
     
     @objc func getLocation() {
         let authStatus = CLLocationManager.authorizationStatus()
+        
+        if logoVisible {
+            hideLogoView()
+        }
         
         if authStatus == .notDetermined {
             locationManager.requestWhenInUseAuthorization()
@@ -293,7 +318,8 @@ class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate
             } else if updatingLocation {
                 statusMessage = "Searching..."
             } else {
-                statusMessage = "Tap 'Get My Location' to Start"
+                statusMessage = ""
+                showLogoView()
             }
             messageLabel.text = statusMessage
             latitudeValueLabel.text = ""
@@ -347,6 +373,21 @@ class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate
         let destination = LocationDetailsViewController(location: location, address: placemark != nil ? string(from: placemark!) : "No Address", placemark: placemark)
         destination.managedObjectContext = self.managedObjectContext
         present(UINavigationController(rootViewController: destination), animated: true, completion: nil)
+    }
+    
+    func showLogoView() {
+        if !logoVisible {
+            logoVisible = true
+            containerView.isHidden = true
+            self.navigationController?.setNavigationBarHidden(true, animated: false)
+            view.addSubview(logoButton)
+        }
+    }
+    
+    func hideLogoView() {
+        logoVisible = false
+        containerView.isHidden = false
+        logoButton.removeFromSuperview()
     }
     
     //new commment
