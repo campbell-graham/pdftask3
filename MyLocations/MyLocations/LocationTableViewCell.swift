@@ -17,6 +17,10 @@ class LocationTableViewCell: UITableViewCell {
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
+        backgroundColor = AppColors.cellBackgroundColor
+        locationDescriptionLabel.textColor = AppColors.textColor
+        locationCategoryLabel.textColor = AppColors.textColor
+    
         addSubview(locationImageView)
         addSubview(locationDescriptionLabel)
         addSubview(locationCategoryLabel)

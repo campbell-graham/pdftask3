@@ -40,6 +40,8 @@ class CategoryPickerTableViewController: UITableViewController {
         super.viewDidLoad()
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         tableView.tableFooterView = UIView()
+        view.backgroundColor = AppColors.backgroundColor
+        tableView.separatorColor = AppColors.placeholderTextColor
     }
 
     override func didReceiveMemoryWarning() {
@@ -54,6 +56,8 @@ class CategoryPickerTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         cell.textLabel?.text = categories[indexPath.row]
+        cell.backgroundColor = AppColors.cellBackgroundColor
+        cell.textLabel?.textColor = AppColors.textColor
         return cell
     }
     

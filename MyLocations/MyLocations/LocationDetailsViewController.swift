@@ -56,6 +56,9 @@ class LocationDetailsViewController: UITableViewController, CategoryPickerTableV
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.backgroundColor = AppColors.backgroundColor
+        tableView.separatorStyle = .none
+        
         if locationToEdit != nil {
             title = "Edit Locaiton"
         } else {
@@ -145,6 +148,7 @@ class LocationDetailsViewController: UITableViewController, CategoryPickerTableV
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 && indexPath.row == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "textFieldCell", for: indexPath) as! TextFieldTableViewCell
+            cell.backgroundColor = AppColors.cellBackgroundColor
             cell.textField.text = descriptionText
             return cell
         }
@@ -154,6 +158,8 @@ class LocationDetailsViewController: UITableViewController, CategoryPickerTableV
         if cell == nil {
             cell = UITableViewCell(style: .value1, reuseIdentifier: "cell")
         }
+        cell?.backgroundColor = AppColors.cellBackgroundColor
+        cell?.textLabel?.textColor = AppColors.textColor
         configureCell(for: cell!, at: indexPath)
         return cell!
     }

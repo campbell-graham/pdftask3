@@ -32,6 +32,7 @@ class LocationsViewController: UITableViewController {
         tableView.tableFooterView = UIView()
         tableView.register(LocationTableViewCell.self, forCellReuseIdentifier: "cell")
         view.backgroundColor = AppColors.backgroundColor
+        tableView.separatorStyle = .none
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -92,10 +93,18 @@ class LocationsViewController: UITableViewController {
         if locationToDisplay.hasPhoto {
            cell.locationImageView.image = locationToDisplay.photoImage
         } else {
-            cell.locationImageView.image = #imageLiteral(resourceName: "second")
+            cell.locationImageView.image = #imageLiteral(resourceName: "icons8-image-50")
         }
         
-        cell.locationDescriptionLabel.text = locationToDisplay.locationDescription
+        let letters = NSCharacterSet.letters
+        let range = locationToDisplay.locationDescription.rangeOfCharacter(from: letters)
+        
+        if range != nil {
+            cell.locationDescriptionLabel.text = locationToDisplay.locationDescription.trimmingCharacters(in: NSCharacterSet.whitespaces)
+        } else {
+            cell.locationDescriptionLabel.text = "[No Description]"
+        }
+        
         cell.locationCategoryLabel.text = locationToDisplay.address
         return cell
     }

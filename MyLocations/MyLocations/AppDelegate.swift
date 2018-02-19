@@ -36,6 +36,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         currentLocationViewController.managedObjectContext = self.managedObjectContext
         
         UINavigationBar.appearance().barTintColor = AppColors.barTintColor
+        
+        UINavigationBar.appearance().titleTextAttributes = [
+            NSAttributedStringKey.foregroundColor: AppColors.textColor ]
         UINavigationBar.appearance().largeTitleTextAttributes = [
             NSAttributedStringKey.foregroundColor: AppColors.textColor ]
         

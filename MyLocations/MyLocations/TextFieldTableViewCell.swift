@@ -16,7 +16,10 @@ class TextFieldTableViewCell: UITableViewCell {
         textField = UITextField()
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        textField.placeholder = "Enter a description..."
+    
+        textField.textColor = AppColors.textColor
+        textField.attributedPlaceholder = NSAttributedString(string: "Enter a description...",
+                                                             attributes: [NSAttributedStringKey.foregroundColor: AppColors.placeholderTextColor])
         
         addSubview(textField)
         
